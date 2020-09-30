@@ -1,0 +1,126 @@
+<!--<!DOCTYPE html>-->
+<!--&lt;!&ndash;[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]&ndash;&gt;-->
+<!--&lt;!&ndash;[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]&ndash;&gt;-->
+<!--&lt;!&ndash;[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]&ndash;&gt;-->
+<!--&lt;!&ndash;[if gt IE 8]>&lt;!&ndash;> <html lang="en" ng-app="myApp" class="no-js"> &lt;!&ndash;<![endif]&ndash;&gt;-->
+<!--<head>-->
+  <!--<meta charset="utf-8">-->
+  <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+  <!--<title>My AngularJS App</title>-->
+  <!--<meta name="description" content="">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <!--<link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">-->
+  <!--<link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">-->
+  <!--<link rel="stylesheet" href="app.css">-->
+  <!--<script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+  <!--<ul class="menu">-->
+    <!--<li><a href="#!/view1">view1</a></li>-->
+    <!--<li><a href="#!/view2">view2</a></li>-->
+  <!--</ul>-->
+
+  <!--&lt;!&ndash;[if lt IE 7]>-->
+      <!--<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
+  <!--<![endif]&ndash;&gt;-->
+
+  <!--<div ng-view></div>-->
+
+  <!--<div>Angular seed app: v<span app-version></span></div>-->
+
+  <!--&lt;!&ndash; In production use:-->
+  <!--<script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>-->
+  <!--&ndash;&gt;-->
+  <!--<script src="bower_components/angular/angular.js"></script>-->
+  <!--<script src="bower_components/angular-route/angular-route.js"></script>-->
+  <!--<script src="app.js"></script>-->
+  <!--<script src="view1/view1.js"></script>-->
+  <!--<script src="view2/view2.js"></script>-->
+  <!--<script src="components/version/version.js"></script>-->
+  <!--<script src="components/version/version-directive.js"></script>-->
+  <!--<script src="components/version/interpolate-filter.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Cloud 9 Integration</title>
+  <meta name="description" content="Cloud 9 integration with AWS SDK">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="mainCtrl">
+  <div class="top-button">
+    <button class="w3-btn w3-green w3-ripple" ng-click="createProject()"> Create New Project</button>
+    <button class="w3-btn w3-green w3-ripple" ng-click="insertLogic()"> Insert AWS Logic</button>
+    <button class="w3-btn w3-green w3-ripple" ng-click="convert2Cpp()"> Convert to C++ Source Code</button>
+    <!--<div> Cursor Position : <b ng-bind="position"></b></div>-->
+  </div>
+  <div class="top-level-div">
+    <div class="file-system">
+      <ul class="w3-ul w3-card-4" style="width:50%">
+        <li class="w3-bar" ng-repeat="x in files" ng-click="showFile(x)">
+          <!--<div class="w3-bar-item w3-button w3-white w3-right" ng-click="deleteFile(x)">×</div>-->
+          <div class="w3-bar-item">{{x.substr(10)}}</div>
+        </li>
+      </ul>
+    </div>
+    <div class="text-area">
+      <textarea class="text-editor w3-panel w3-border" id="doc" ng-model="code" ng-keyup="getLineNumber($event)" ng-mouseup="getLineNumber($event)">
+      </textarea>
+    </div>
+  </div>
+  <div class="w3-display-middle w3-panel w3-border s3-border-blue w3-white" ng-hide="hideSetUpWizard">
+    <h3>Create New Project:</h3>
+    <label>Project Name:</label>
+    <input class="w3-input w3-border" type="text" ng-model="projectName" placeholder="Project Name">
+    <br>
+    <label>Service:</label>
+    <select class="w3-select w3-border" ng-model="serviceName" ng-options="x for x in supportedService"> </select>
+    <br><br>
+    <label>Language:</label>
+    <select class="w3-select w3-border" ng-model="languageName" ng-options="x for x in supportedLanguage"> </select>
+    <br><br>
+    <label>Template:</label>
+    <select class="w3-select w3-border" ng-model="templateName" ng-options="x for x in supportedTemplate(languageName)"> </select>
+    <br><br><br>
+    <button class="w3-btn w3-blue w3-ripple" ng-click="create()"> Create</button>
+    <br><br>
+  </div>
+  <div class="w3-panel w3-border s3-border-blue w3-white" style="position: absolute; margin-left: 40%; margin-right: 60%; top: 100px" ng-hide="hideCreateLogic">
+      <h3>Insert AWS Logic Template:</h3>
+      <label>Operation:</label>
+      <input class="w3-input w3-border" type="text" ng-model="keywords" ng-keyup="findOperation(keywords)" placeholder="Operation Name">
+      <div style="max-height:300px; overflow: scroll">
+        <ul class="w3-ul w3-card-4" style="width:100%">
+          <li ng-repeat="x in operationList" ng-click="selectOperation(x)" ng-mouseover="showDocument(x)">{{x}}</li>
+        </ul>
+      </div>
+      <Label>Description:</Label>
+      <div class="w3-panel w3-border w3-white" style="width: 500px">
+        {{operationDocument}}
+      </div>
+  </div>
+  <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <!--<div ng-view></div>-->
+  <!--<div>Angular seed app: v<span app-version></span></div>-->
+  <!-- In production use:
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+    -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+  </body>
+</html>
